@@ -20,13 +20,19 @@ dados = carregar_dados(acoes)
 #mostrar graficos nas tela
 
 st.write('''
-    # Meu primeiro site em streamlit
-    Desejo fazer graficos interativos.
+    # Streamlit
+    Graficos
 ''')
 
-# Preparar as visualizações
+# Preparar as visualizações - Filtros
 
+lista_acoes = st.multiselect('Escolha as ações para visualizar',dados.columns)
 
+if lista_acoes:
+    dados = dados[lista_acoes]
+    if len(lista_acoes) == 1:
+        acao_unica = lista_acoes[0]
+        dados = dados.rename(columns = { acao_unica:'Close' })
 
 
 # Criar os graficos
