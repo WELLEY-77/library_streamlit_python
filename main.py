@@ -58,3 +58,67 @@ st.write('''
     # Fim
 
 ''')
+
+
+
+
+
+
+
+
+
+
+
+def fetch_data(ID_empresa):
+
+    # URL do seu endpoint no Xano
+    XANO_API_GET = f'https://xqyx-rytf-8kv4.n7d.xano.io/api:IVkUsJEe/arquivos_faturamento?ID_empresa={int(ID_empresa)}'
+
+    st.write(f'URL chamada: {XANO_API_GET}')
+
+
+    try:
+        # realizar a chamada get api
+        response = requests.get(XANO_API_GET)
+        st.write(response)
+
+        # verificar se a respota foi bem sucedida
+        if response.status_code == 200:
+            st.write('Resposta recebida com sucesso')
+            return response.json()  # Retorna os dados em formato JSON
+        else:
+            st.error(f"Erro: {response.status_code}")
+            st.write(f"Detalhes do erro: {response.text}")
+            return None
+    except Exception as e:
+        st.error(f"Erro ao fazer requisição: {str(e)}")
+        return None
+
+
+st.title("Integração com Xano")
+
+param = st.text_input('Insira o parâmetro para a API')
+
+if st.button('Buscar dados'):
+    if param:
+        # chama função para pegar dados
+        data = fetch_data(param)
+        st.json(data)
+        if data:
+            st.write("Dados recebidos:")
+            st.json(data)
+    else:
+        st.write("Nenhum dado disponível.")
+
+
+st.write("""
+# My first app
+Hello *world!*
+""")
+    
+item = data[0]['aquivo_NF']['url']
+st.write(item)
+df = pd.read_csv(item)
+st.line_chart(df)
+    
+
